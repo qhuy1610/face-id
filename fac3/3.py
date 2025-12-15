@@ -23,7 +23,7 @@ names = {
 }
 
 # --- Mở webcam ---
-cam = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 cam.set(3, 640)
 cam.set(4, 480)
 
@@ -44,15 +44,15 @@ while True:
     net.setInput(blob)
     detections = net.forward()
 
-    num_faces = 0
+    # num_faces = 0
 
     # --- Duyệt qua tất cả khuôn mặt ---
     for i in range(detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > 0.85:  # ngưỡng tin cậy
-            num_faces += 1
-            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-            (x1, y1, x2, y2) = box.astype("int")
+            # num_faces += 1
+            box = detections[0, 0, i, 3:7] * ([w, h, w, h])
+            (x1, y1, x2, y2) = box.astype(int)
 
             # Cắt khuôn mặt
             face = frame[y1:y2, x1:x2]
@@ -69,7 +69,7 @@ while True:
             id_ = np.argmax(predictions)
             confidence_cnn = predictions[0][id_] * 100
 
-            if confidence_cnn > 50:
+            if confidence_cnn > 90:
                 name = names.get(id_ + 1, "Unknown")
             else:
                 name = "Unknown"

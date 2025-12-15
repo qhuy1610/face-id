@@ -76,7 +76,7 @@ while True:
     ret, frame = cam.read()
     if not ret:
         break
-    frame = cv2.flip(frame, 1)
+    # frame = cv2.flip(frame, 1)
     h, w = frame.shape[:2]
 
     blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0,
@@ -98,6 +98,7 @@ while True:
             face_array = np.expand_dims(face_array, axis=(0, -1))
 
             preds = cnn_model.predict(face_array)
+            
             idx_pred = np.argmax(preds)
             conf_cnn = preds[0][idx_pred] * 100
 
@@ -108,11 +109,11 @@ while True:
                 lop.append(lop_id)
             # name = label_to_name[label]
             # Chỉ đánh dấu attendance nếu thuộc lớp đang điểm danh
-            if conf_cnn > 50:
-                name=id_to_name.get(idx_pred, "unkown")
+            if conf_cnn > 99:
+                name=id_to_name.get(idx_pred, "KBT")
                 if lop[idx_pred] ==lop_chon:
                     attendance[(idx_pred)] = True
-                    print(idx_pred)
+                    # print(idx_pred)
                     
 
             else:
@@ -124,7 +125,7 @@ while True:
             cv2.putText(frame, f"Acc: {round(conf_cnn)}%", (x1+5, y2+25), font, 0.7, (255,255,0), 1)
 
     # Hiển thị số người có mặt trong lớp
-    cv2.putText(frame, f"Đã điểm danh: {sum(attendance)}/{len(classes_info[lop_chon])}", (20,40),
+    cv2.putText(frame, f"Da Diem Nhanh: {sum(attendance)}/{len(classes_info[lop_chon])}", (20,40),
                 font, 0.8, (0,255,255), 2)
 
     cv2.imshow(f"Điểm danh lớp {lop_chon}", frame)
@@ -151,3 +152,24 @@ with open(f"diem_danh_{lop_chon}_{date_str}.txt", "w", encoding='utf-8') as f:
     f.write(f"Vắng mặt ({len(absent)}): {', '.join(absent)}\n")
 
 print("\n📁 Kết quả đã được lưu.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

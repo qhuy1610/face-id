@@ -72,7 +72,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # --- Huấn luyện CNN ---
-EPOCHS = 5
+EPOCHS = 10
 history = model.fit(images, labels, epochs=EPOCHS)
 
 # --- Lưu model và label map ---
